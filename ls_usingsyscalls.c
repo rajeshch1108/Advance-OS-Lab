@@ -6,7 +6,7 @@
 int main(int argc, char *argv[]){
 
         char *path;
-        if(argc==1){
+        if(argc==1){      // printing files of current directory
         path=".";
               DIR *dir=opendir(path);
         if(dir==NULL){
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
               }
               closedir(dir);
            }     
-      else  if(argc==2 && strcmp(argv[1],"-a")==0){
+      else  if(argc==2 && strcmp(argv[1],"-a")==0){   // printing files of current directory(including files starting with .)
               path=".";
                 DIR *dir=opendir(path);
                     if(dir==NULL){
@@ -37,8 +37,26 @@ int main(int argc, char *argv[]){
                             
         }
         else{
-                    path=argv[1];
-                       DIR *dir=opendir(path);
+                if(strcmp(argv[1],"-a")==0){
+                		
+        
+                    path=argv[2];
+                       DIR *dir=opendir(path);    // printing files of the given path
+        if(dir==NULL){
+              perror("opendir");
+               return 1;
+          }
+          
+          struct dirent *entry;
+          while((entry=readdir(dir))!=NULL){
+                     
+                printf("%s\n", entry->d_name);
+              }
+              closedir(dir);
+          }else{
+                       
+                 path=argv[1];
+                       DIR *dir=opendir(path);    // printing files of the given path
         if(dir==NULL){
               perror("opendir");
                return 1;
@@ -51,7 +69,7 @@ int main(int argc, char *argv[]){
                 printf("%s\n", entry->d_name);
               }
               closedir(dir);
-              
+          }
             }  
         
         
